@@ -113,7 +113,7 @@ float sigma_derivation(float y) { // Logic激活函数的自变量微分,即sigm
 	return y*(1 - y); // 这里y是指经过激活函数的输出值，而不是自变量
 }
 //opencl训练单网络优化实现
-kernel void traincnn(global CNNA* cnns,global ImgArr* IData,global LabelArr* LData,global CNNOpts* opts,global int *bs){
+kernel void traincnn(global CNNA* cnns,global ImgArr* IData,global LabelArr* LData,global CNNOpts* opts ,global int *bs){
     int x = get_global_id(0);
 	int py = *bs + x;
 	//if(py>58999)

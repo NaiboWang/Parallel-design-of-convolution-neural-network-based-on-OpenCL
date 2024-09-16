@@ -11,14 +11,14 @@
 #include <CL/cl.h>
 #endif
 using namespace std;
-//声明这些变量,注意只能定义一次
-extern FILE *fpp;//保存OPENCL计算时间
+//������Щ����,ע��ֻ�ܶ���һ��
+extern FILE *fpp;//����OPENCL����ʱ��
 extern cl_context context;
 extern cl_command_queue commandQueue;
 extern cl_program program;
 extern cl_device_id device;
 extern cl_kernel kernel,kernel2;
-extern cl_mem memObjects[3];//默认没什么用
+extern cl_mem memObjects[3];//Ĭ��ûʲô��
 extern cl_int errNum;
 const int ARRAY_SIZE = 10000;
 int initOpenCL(FILE *fp);

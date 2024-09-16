@@ -11,14 +11,14 @@
 #include <CL/cl.h>
 #endif
 using namespace std;
-//å£°æ˜è¿™äº›å˜é‡,æ³¨æ„åªèƒ½å®šä¹‰ä¸€æ¬¡
-extern FILE *fpp;//ä¿å­˜OPENCLè®¡ç®—æ—¶é—´
+//ÉùÃ÷ÕâĞ©±äÁ¿,×¢ÒâÖ»ÄÜ¶¨ÒåÒ»´Î
+extern FILE *fpp;//±£´æOPENCL¼ÆËãÊ±¼ä
 extern cl_context context;
 extern cl_command_queue commandQueue;
 extern cl_program program;
 extern cl_device_id device;
 extern cl_kernel kernel,kernel2;
-extern cl_mem memObjects[3];//é»˜è®¤æ²¡ä»€ä¹ˆç”¨
+extern cl_mem memObjects[3];//Ä¬ÈÏÃ»Ê²Ã´ÓÃ
 extern cl_int errNum;
 const int ARRAY_SIZE = 10000;
 int initOpenCL(FILE *fp);

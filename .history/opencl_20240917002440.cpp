@@ -9,15 +9,15 @@
 #include <CL/cl.h>
 #endif
 #include "opencl.hpp"
-//å®šä¹‰å˜é‡
+//¶¨Òå±äÁ¿
 using namespace std;
 FILE *fpp;
 cl_context context;
 cl_command_queue commandQueue;
 cl_program program;
 cl_device_id device;
-cl_kernel kernel, kernel2, kernel3;//ä¸‰ç§å·ç§¯å†…æ ¸ä»£è¡¨ä¸‰ç§ä¸åŒçš„æƒ…å†µ
-cl_mem memObjects[3];//é»˜è®¤æ²¡ä»€ä¹ˆç”¨
+cl_kernel kernel, kernel2, kernel3;//ÈıÖÖ¾í»ıÄÚºË´ú±íÈıÖÖ²»Í¬µÄÇé¿ö
+cl_mem memObjects[3];//Ä¬ÈÏÃ»Ê²Ã´ÓÃ
 cl_int errNum;
 ///
 //  Create an OpenCL context on the first available platform using
@@ -51,9 +51,9 @@ cl_context CreateContext(int type)
 		clGetPlatformInfo(platform[i], CL_PLATFORM_VERSION, size, Pname, NULL);
 
 		if (type == 3)
-			firstPlatformId = platform[2];//ç¬¬ä¸€ä¸ªæ˜¯GPU,ç¬¬äºŒä¸ªç¬¬ä¸‰ä¸ªæ˜¯CPU
+			firstPlatformId = platform[2];//µÚÒ»¸öÊÇGPU,µÚ¶ş¸öµÚÈı¸öÊÇCPU
 		else
-			firstPlatformId = platform[type];//ç¬¬ä¸€ä¸ªæ˜¯GPU,ç¬¬äºŒä¸ªç¬¬ä¸‰ä¸ªæ˜¯CPU
+			firstPlatformId = platform[type];//µÚÒ»¸öÊÇGPU,µÚ¶ş¸öµÚÈı¸öÊÇCPU
 
 		std::cout << Pname << std::endl;
 		cl_uint num;
@@ -62,7 +62,7 @@ cl_context CreateContext(int type)
 		cl_device_id *device;
 		device = (cl_device_id *)malloc(sizeof(cl_device_id)*num);
 		clGetDeviceIDs(platform[i], CL_DEVICE_TYPE_ALL, num, device, NULL);
-		//ä»¥ä¸‹ç”¨æ¥æŸ¥è¯¢è®¾å¤‡ä¿¡æ¯
+		//ÒÔÏÂÓÃÀ´²éÑ¯Éè±¸ĞÅÏ¢
 		/*for (int j = 0; j < num; j++)
 		{
 		char buffer[1000];
@@ -79,15 +79,15 @@ cl_context CreateContext(int type)
 		else
 		{
 		if ((caps &CL_DEVICE_SVM_FINE_GRAIN_SYSTEM) && (caps &CL_DEVICE_SVM_ATOMICS))
-		cout << "ç»†ç²’åº¦åŸå­ç³»ç»Ÿ" << endl;
+		cout << "Ï¸Á£¶ÈÔ­×ÓÏµÍ³" << endl;
 		else if (caps & CL_DEVICE_SVM_FINE_GRAIN_SYSTEM)
-		cout << "ç»†ç²’åº¦ç³»ç»Ÿ" << endl;
+		cout << "Ï¸Á£¶ÈÏµÍ³" << endl;
 		else if ((caps &CL_DEVICE_SVM_FINE_GRAIN_BUFFER) && (caps &CL_DEVICE_SVM_ATOMICS))
-		cout << "ç»†ç²’åº¦åŸå­ç¼“å†²" << endl;
+		cout << "Ï¸Á£¶ÈÔ­×Ó»º³å" << endl;
 		else if (caps & CL_DEVICE_SVM_FINE_GRAIN_BUFFER)
-		cout << "ç»†ç²’åº¦ç¼“å†²" << endl;
+		cout << "Ï¸Á£¶È»º³å" << endl;
 		else if (caps & CL_DEVICE_SVM_COARSE_GRAIN_BUFFER)
-		cout << "ç²—ç²’åº¦ç¼“å†²" << endl;
+		cout << "´ÖÁ£¶È»º³å" << endl;
 		else
 		cout << caps << endl;
 		}
@@ -248,7 +248,7 @@ cl_program CreateProgram(cl_context context, cl_device_id device, const char* fi
 		std::cerr << "Failed to create CL program from source." << std::endl;
 		return NULL;
 	}
-	const char *options = "-cl-std=CL2.0 -DBS=16";//2.0ç¼–è¯‘æŒ‡å®š
+	const char *options = "-cl-std=CL2.0 -DBS=16";//2.0±àÒëÖ¸¶¨
 
 	errNum = clBuildProgram(program, 0, NULL, options, NULL, NULL);
 	if (errNum != CL_SUCCESS)
@@ -317,19 +317,19 @@ void Cleanup(cl_context context, cl_command_queue commandQueue,
 }
 int initOpenCL(FILE *fp)
 {
-	//OPENCLåˆå§‹åŒ–éƒ¨åˆ†
+	//OPENCL³õÊ¼»¯²¿·Ö
 	fpp = fopen("E:\\CNNData\\testcl.txt", "w");
-	int type = 3;//ä»£è¡¨é€‰æ‹©çš„OPENCLè®¾å¤‡,0NAVIDIA 1,2INTEL 3AMD 4AMDINTEL
-	int ttype = 0;//0,1,2ä»£è¡¨äº†3ç§ä¸åŒçš„å†…æ ¸å‡½æ•°
+	int type = 3;//´ú±íÑ¡ÔñµÄOPENCLÉè±¸,0NAVIDIA 1,2INTEL 3AMD 4AMDINTEL
+	int ttype = 0;//0,1,2´ú±íÁË3ÖÖ²»Í¬µÄÄÚºËº¯Êı
 	if (type == 0)
-		fprintf(fp, "ç±»å‹:NVIDIAGPU\n");
+		fprintf(fp, "ÀàĞÍ:NVIDIAGPU\n");
 	else if (type == 1 || type == 2 || type == 4)
-		fprintf(fp, "ç±»å‹:INTELCPU\n");
+		fprintf(fp, "ÀàĞÍ:INTELCPU\n");
 	else
-		fprintf(fp, "ç±»å‹:AMDGPU\n");
+		fprintf(fp, "ÀàĞÍ:AMDGPU\n");
 
-	context = CreateContext(type);//åˆ›å»ºOPENCLä¸Šä¸‹æ–‡å¹¶é€‰æ‹©è®¾å¤‡
-								  //pcon = &context;//æŒ‡é’ˆæŒ‡å‘context
+	context = CreateContext(type);//´´½¨OPENCLÉÏÏÂÎÄ²¢Ñ¡ÔñÉè±¸
+								  //pcon = &context;//Ö¸ÕëÖ¸Ïòcontext
 	commandQueue = CreateCommandQueue(context, &device, type);
 	//pcomq = &commandQueue;
 	if (commandQueue == NULL)
@@ -350,8 +350,8 @@ int initOpenCL(FILE *fp)
 	// Create OpenCL kernel
 	if (ttype == 0)
 	{
-		kernel = clCreateKernel(program, "cnntest", NULL);//æµ‹è¯•
-		kernel2 = clCreateKernel(program, "cnntrain", NULL);//æµ‹è¯•
+		kernel = clCreateKernel(program, "cnntest", NULL);//²âÊÔ
+		kernel2 = clCreateKernel(program, "cnntrain", NULL);//²âÊÔ
 	}
 
 	if (kernel == NULL)
@@ -361,6 +361,6 @@ int initOpenCL(FILE *fp)
 		return 1;
 	}
 	//pker = &kernel;
-	std::cout << "OPENCLåˆå§‹åŒ–å®Œæ¯•" << endl;
+	std::cout << "OPENCL³õÊ¼»¯Íê±Ï" << endl;
 	return 0;
 }
